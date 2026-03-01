@@ -1,10 +1,17 @@
 'use client';
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Pokemon, FilterOptions } from './types';
 import { getAllCategoriesFromJson, getAllPokemonFromJson } from './pokemon-data';
 import { fetchPokemon } from './api';
+
+// Noop storage for SSR
+const noopStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+};
 
 interface PokemonStore {
   // Data
@@ -404,6 +411,16 @@ export const usePokemonStore = create<PokemonStore>()(
       partialize: (state) => ({
         filters: state.filters,
       }),
+      storage: (() => {
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            return createJSONStorage(() => localStorage);
+          }
+        } catch {
+          // Ignore errors during SSR
+        }
+        return createJSONStorage(() => noopStorage);
+      })(),
     },
   ),
 );
