@@ -16,15 +16,16 @@ const GROUP_OVER = 5;
 
 interface PokemonMapProps {
   onToggleSidebar?: () => void;
+  onToggleAnalytics?: () => void;
 }
 
-export function PokemonMap({ onToggleSidebar }: PokemonMapProps) {
+export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const initialFitDone = useRef(false);
 
-  const { pokemon: allPokemon, getFilteredPokemon, loading } = usePokemonStore();
+  const { pokemon: allPokemon, getFilteredPokemon, loading, focusTarget, clearFocusTarget } = usePokemonStore();
   const filteredPokemon = getFilteredPokemon();
 
   // Initialize map
@@ -71,64 +72,205 @@ export function PokemonMap({ onToggleSidebar }: PokemonMapProps) {
       zoomToBoundsOnClick: true,
     });
 
+    // Marker gradient
+    const markerGradient = 'linear-gradient(135deg, #ef4444, #dc2626)';
+    const headerGradient = 'linear-gradient(90deg, #858E96, #60696B)';
+
     // Add markers to the cluster group
     filteredPokemon.forEach((p) => {
       const el = document.createElement('div');
       el.className = 'pokemon-marker';
       el.style.cssText = `
-        background-color: #ef4444;
+        background: ${markerGradient};
         border-radius: 50%;
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        border: 2px solid white;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        font-size: 12px;
-        font-weight: bold;
-        color: white;
+        border: 2.5px solid white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.08);
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        transition: transform 0.15s ease;
       `;
       el.textContent = p.id;
 
       const customIcon = L.divIcon({
         html: el,
         className: 'pokemon-marker-container',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
       });
 
-      const marker = L.marker([p.lat, p.lng], { icon: customIcon, pokemonId: p.id, pokemonImage: p.svgImage, pokemonName: p.name } as any);
+      const marker = L.marker([p.lat, p.lng], {
+        icon: customIcon,
+        pokemonId: p.id,
+        pokemonImage: p.svgImage || p.image,
+        pokemonName: p.name,
+        pokemonCp: p.cp,
+        pokemonAttack: p.attack,
+        pokemonDefence: p.defence,
+        pokemonDespawn: p.despawn,
+        pokemonShiny: p.shiny,
+        pokemonCustom: p.custom,
+        pokemonMighty: p.mighty,
+        pokemonForm: p.form || 0,
+      } as any);
 
+      // Build enhanced individual popup
       const remaining = p.despawn ? p.despawn - Math.floor(Date.now() / 1000) : null;
-      let remainingText = '';
+
+
+      // Stat bars
+      const maxStat = 300;
+      const statBar = (label: string, value: number | undefined, color: string) => {
+        if (value === undefined || value === null || value === -1) return '';
+        const pct = Math.min((value / maxStat) * 100, 100);
+        return `<div style="display:flex; align-items:center; gap:6px; margin-top:3px;">
+          <span style="font-size:10px; font-weight:600; color:#6b7280; width:28px; text-align:right;">${label}</span>
+          <div style="flex:1; height:6px; background:#e5e7eb; border-radius:3px; overflow:hidden;">
+            <div style="width:${pct}%; height:100%; background:${color}; border-radius:3px; transition:width 0.3s ease;"></div>
+          </div>
+          <span style="font-size:10px; font-weight:700; color:#374151; width:28px;">${value}</span>
+        </div>`;
+      };
+
+      const atkBar = statBar('ATK', p.attack, '#ef4444');
+      const defBar = statBar('DEF', p.defence, '#3b82f6');
+
+      // CP display
+      const cpSection = p.cp !== undefined && p.cp !== null && p.cp !== -1
+        ? `<div style="
+            display:inline-flex; align-items:center; gap:4px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white; padding: 3px 10px; border-radius: 10px;
+            font-size: 12px; font-weight: 800; letter-spacing: 0.3px;
+            box-shadow: 0 2px 6px rgba(59,130,246,0.35);
+          ">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            CP ${p.cp}
+          </div>`
+        : '';
+
+      // Timer
+      let timerSection = '';
       if (remaining !== null) {
         if (remaining > 0) {
-          remainingText = `<div style="font-size: 12px; color: #6b7280; margin-top: 4px;">${Math.floor(remaining / 60)}m ${remaining % 60}s remaining</div>`;
+          const mins = Math.floor(remaining / 60);
+          const secs = remaining % 60;
+          const urgentColor = remaining < 300 ? '#ef4444' : remaining < 600 ? '#f59e0b' : '#10b981';
+          timerSection = `<div style="
+            display:flex; align-items:center; justify-content:center; gap:4px;
+            padding: 4px 0; margin-top: 4px;
+            font-size: 11px; font-weight: 600; color: ${urgentColor};
+            border-top: 1px solid #f3f4f6;
+          ">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="${urgentColor}" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${mins}m ${secs}s remaining
+          </div>`;
         } else {
-          remainingText = `<div style="font-size: 12px; color: #ef4444; margin-top: 4px;">Expired</div>`;
+          timerSection = `<div style="
+            display:flex; align-items:center; justify-content:center; gap:4px;
+            padding: 4px 0; margin-top: 4px; font-size: 11px; font-weight: 700;
+            color: #ef4444; border-top: 1px solid #f3f4f6;
+          ">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Despawned
+          </div>`;
         }
       }
 
-      const cpText = p.cp !== undefined && p.cp !== null && p.cp !== -1 ? `<div style="font-size: 14px; font-weight: 600; color: #2563eb; margin-top: 4px;">CP: ${p.cp}</div>` : '';
+      const hasStats = atkBar || defBar;
 
-      const popup = L.popup({ offset: [0, -12] }).setContent(
-        `<div style="text-align:center; padding: 4px;"><img src="${p.svgImage || p.image}" width="64" height="64" style="display: block; margin: 0 auto;" /><div style="font-size: 14px; font-weight: 600; margin-top: 4px;">${p.name}</div>${cpText}${remainingText}</div>`,
-      );
+      const popupContent = `
+        <div style="
+          width: 200px; border-radius: 14px; overflow: hidden;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        ">
+          <!-- Header -->
+          <div style="
+            background: ${headerGradient};
+            padding: 12px 12px 16px; text-align: center;
+            position: relative;
+          ">
+            <img src="${p.svgImage || p.image}" width="72" height="72"
+              style="display:block; margin:0 auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));"
+            />
+            <div style="
+              font-size: 15px; font-weight: 800; color: white;
+              margin-top: 6px; text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            ">${p.name}</div>
+            <div style="
+              font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.75);
+              margin-top: 1px;
+            ">#${p.id}</div>
+          </div>
+
+          <!-- Body -->
+          <div style="background: white; padding: 10px 12px 8px;">
+            <!-- CP -->
+            <div style="display:flex; align-items:center; justify-content:center; gap:4px;">
+              ${cpSection}
+            </div>
+
+            <!-- Badges -->
+            ${(() => {
+              const badges: string[] = [];
+              if (p.shiny) badges.push(`<span style="
+                display:inline-flex; align-items:center; gap:2px;
+                padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;
+                background: linear-gradient(135deg, #fbbf24, #f59e0b); color:#78350f;
+                box-shadow: 0 1px 3px rgba(245,158,11,0.3);
+              ">✨ Shiny</span>`);
+              if (p.mighty) badges.push(`<span style="
+                display:inline-flex; align-items:center; gap:2px;
+                padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;
+                background: linear-gradient(135deg, #ef4444, #dc2626); color:#fff;
+                box-shadow: 0 1px 3px rgba(239,68,68,0.3);
+              ">💪 Mighty</span>`);
+              if (p.custom) badges.push(`<span style="
+                display:inline-flex; align-items:center; gap:2px;
+                padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;
+                background: linear-gradient(135deg, #8b5cf6, #7c3aed); color:#fff;
+                box-shadow: 0 1px 3px rgba(139,92,246,0.3);
+              ">⭐ Custom</span>`);
+              if (p.form !== undefined && p.form !== null && p.form > 0) badges.push(`<span style="
+                display:inline-flex; align-items:center; gap:2px;
+                padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;
+                background: #e0e7ff; color:#3730a3;
+              ">Form ${p.form}</span>`);
+              return badges.length > 0 ? `<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:4px; margin-top:6px;">${badges.join('')}</div>` : '';
+            })()}
+
+            <!-- Timer -->
+            ${timerSection}
+          </div>
+        </div>`;
+
+      const popup = L.popup({
+        offset: [0, -14],
+        closeButton: false,
+        className: 'pokemon-enhanced-popup',
+        maxWidth: 220,
+        minWidth: 200,
+      }).setContent(popupContent);
+
       marker.bindPopup(popup);
-
       marker.on('mouseover', () => marker.openPopup());
       marker.on('mouseout', () => marker.closePopup());
 
       clusterGroup.addLayer(marker);
     });
 
-    // Show tooltip with Pokemon images and IDs on cluster hover
+    // Show tooltip with Pokemon images on cluster hover
     clusterGroup.on('clustermouseover', (e: any) => {
       const cluster = e.layer;
       const markers = cluster.getAllChildMarkers();
-      const maxShow = 9;
+      const maxShow = 6;
 
       // Get unique Pokémon by ID
       const uniqueMap = new Map();
@@ -140,70 +282,107 @@ export function PokemonMap({ onToggleSidebar }: PokemonMapProps) {
       });
 
       const uniqueMarkers = Array.from(uniqueMap.values());
+      const totalInCluster = markers.length;
+      const uniqueCount = uniqueMarkers.length;
+
       const items = uniqueMarkers
         .slice(0, maxShow)
-        .map(
-          (m: any) =>
-            `<div style="
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          width: 80px;
-          height: 80px;
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          padding: 8px;
-          transition: transform 0.2s;
-        ">
-          <img
-            src="${m.options.pokemonImage}"
-            width="64"
-            height="64"
-            style="
-              image-rendering: pixelated;
-              object-fit: contain;
-            "
-          />
-          <span style="
-            font-size: 11px;
-            font-weight: 600;
-            color: #374151;
-            margin-top: 4px;
-          ">#${m.options.pokemonId}</span>
-        </div>`,
-        )
+        .map((m: any) => {
+          const cp = m.options.pokemonCp;
+          const isShiny = m.options.pokemonShiny;
+          const isMighty = m.options.pokemonMighty;
+          const isCustom = m.options.pokemonCustom;
+          const form = m.options.pokemonForm;
+
+          const cpBadge = cp !== undefined && cp !== null && cp !== -1
+            ? `<span style="
+                font-size:9px; font-weight:700; color:#3b82f6;
+                background: #eff6ff; padding: 1px 5px; border-radius: 6px;
+              ">CP ${cp}</span>`
+            : '';
+
+          const indicators = [];
+          if (isShiny) indicators.push('<span title="Shiny" style="color: #f59e0b;">✨</span>');
+          if (isMighty) indicators.push('<span title="Mighty" style="color: #ef4444;">💪</span>');
+          if (isCustom) indicators.push('<span title="Custom" style="color: #8b5cf6;">⭐</span>');
+          if (form !== undefined && form !== null && form > 0) {
+            indicators.push(`<span style="font-size: 8px; font-weight: 600; color: #6366f1; background: #e0e7ff; padding: 0px 4px; border-radius: 4px;">F${form}</span>`);
+          }
+
+          const indicatorsHtml = indicators.length > 0
+            ? `<div style="display:flex; align-items:center; gap:2px; margin-left: auto;">${indicators.join('')}</div>`
+            : '';
+
+          return `<div style="
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 8px; border-radius: 10px;
+            background: white;
+            border: 1px solid #f3f4f6;
+            transition: background 0.15s;
+          ">
+            <div style="
+              flex-shrink: 0; width: 40px; height: 40px;
+              border-radius: 10px; background: ${headerGradient};
+              display: flex; align-items: center; justify-content: center;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            ">
+              <img src="${m.options.pokemonImage}" width="30" height="30"
+                style="object-fit:contain; filter: ${isShiny ? 'drop-shadow(0 0 4px rgba(245, 158, 11, 0.6))' : 'drop-shadow(0 1px 2px rgba(0,0,0,0.15))'};"
+              />
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="display: flex; align-items: center; gap: 4px; overflow: hidden;">
+                <div style="font-size:12px; font-weight:700; color:#1f2937; line-height:1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ${m.options.pokemonName}
+                </div>
+                ${indicatorsHtml}
+              </div>
+              <div style="display:flex; align-items:center; gap:4px; margin-top:2px;">
+                ${cpBadge}
+              </div>
+            </div>
+            <span style="font-size:10px; font-weight:600; color:#9ca3af;">#${m.options.pokemonId}</span>
+          </div>`;
+        })
         .join('');
 
-      const extra =
-        uniqueMarkers.length > maxShow
-          ? `<div style="
-          grid-column: 1 / -1;
-          text-align: center;
-          font-size: 12px;
-          color: #6b7280;
-          padding: 8px;
-          background: #f9fafb;
-          border-radius: 6px;
-          margin-top: 4px;
-        ">+${uniqueMarkers.length - maxShow} more unique</div>`
-          : '';
+      const remaining = uniqueCount - maxShow;
+      const extra = remaining > 0
+        ? `<div style="
+            text-align:center; font-size:11px; font-weight:600;
+            color:#6b7280; padding:6px; margin-top:2px;
+            background: #f9fafb; border-radius:8px;
+          ">+${remaining} more unique species</div>`
+        : '';
 
       const html = `<div style="
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 8px;
-          padding: 12px;
-          background: #f9fafb;
-          border-radius: 12px;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-          min-width: 280px;
-          max-width: 280px;
+        width: 260px; padding: 10px;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.05);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      ">
+        <!-- Header -->
+        <div style="
+          display:flex; align-items:center; justify-content:space-between;
+          margin-bottom:8px; padding:0 4px;
         ">
+          <span style="font-size:12px; font-weight:800; color:#1f2937;">
+            ${totalInCluster} Pokémon
+          </span>
+          <span style="
+            font-size:10px; font-weight:600; color:#6b7280;
+            background:#e5e7eb; padding:2px 7px; border-radius:8px;
+          ">${uniqueCount} unique</span>
+        </div>
+
+        <!-- List -->
+        <div style="display:flex; flex-direction:column; gap:4px;">
           ${items}
           ${extra}
-        </div>`;
+        </div>
+      </div>`;
+
       cluster.bindTooltip(html, { direction: 'top', offset: [0, -10], className: 'pokemon-cluster-tooltip' }).openTooltip();
     });
     clusterGroup.on('clustermouseout', (e: any) => {
@@ -221,10 +400,68 @@ export function PokemonMap({ onToggleSidebar }: PokemonMapProps) {
     }
   }, [filteredPokemon]);
 
+  // React to focus target from analytics drawer
+  useEffect(() => {
+    if (!focusTarget || !map.current || !clusterGroupRef.current) return;
+
+    const m = map.current;
+    const cluster = clusterGroupRef.current;
+
+    if (focusTarget.type === 'pokemon') {
+      // Fly to the specific Pokemon location
+      m.flyTo([focusTarget.lat, focusTarget.lng], 17, { duration: 1.2 });
+
+      // After flying, find the matching marker and open its popup
+      m.once('moveend', () => {
+        const layers = cluster.getLayers() as L.Marker[];
+        const target = layers.find((layer: any) => {
+          const ll = layer.getLatLng();
+          return (
+            ll.lat === focusTarget.lat &&
+            ll.lng === focusTarget.lng &&
+            layer.options.pokemonId === focusTarget.id
+          );
+        });
+
+        if (target) {
+          // Use zoomToShowLayer to unspiderfy clusters if needed, then open popup
+          cluster.zoomToShowLayer(target as any, () => {
+            target.openPopup();
+          });
+        }
+      });
+    } else if (focusTarget.type === 'species') {
+      // Collect all instances of this species and fit bounds around them
+      const matching = filteredPokemon.filter((p) => p.name === focusTarget.name);
+      if (matching.length > 0) {
+        const bounds = L.latLngBounds(matching.map((p) => [p.lat, p.lng] as [number, number]));
+        m.flyToBounds(bounds, { padding: [60, 60], maxZoom: 15, duration: 1.2 });
+
+        // If only one instance, open its popup
+        if (matching.length === 1) {
+          m.once('moveend', () => {
+            const layers = cluster.getLayers() as L.Marker[];
+            const target = layers.find((layer: any) => {
+              const ll = layer.getLatLng();
+              return ll.lat === matching[0].lat && ll.lng === matching[0].lng;
+            });
+            if (target) {
+              cluster.zoomToShowLayer(target as any, () => {
+                target.openPopup();
+              });
+            }
+          });
+        }
+      }
+    }
+
+    clearFocusTarget();
+  }, [focusTarget, clearFocusTarget, filteredPokemon]);
+
   return (
     <div className="relative w-full h-full flex flex-col bg-muted/30">
       <div ref={mapContainer} className="absolute inset-0 z-0" />
-      <DashboardHeader onToggleSidebar={onToggleSidebar} />
+      <DashboardHeader onToggleSidebar={onToggleSidebar} onToggleAnalytics={onToggleAnalytics} />
 
       {/* Loading overlay */}
       {loading && (

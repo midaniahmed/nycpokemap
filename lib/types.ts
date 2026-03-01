@@ -11,9 +11,14 @@ export interface Pokemon {
   despawn?: number;
   inserted?: number;
   visibleSeconds?: number;
-  cp?: number;
   attack?: number;
   defence?: number;
+
+  cp?: number;
+  custom?: boolean;
+  form?: number;
+  shiny?: boolean;
+  mighty?: boolean;
 }
 
 export interface FilterOptions {
@@ -29,3 +34,8 @@ export interface ApiResponse {
   pokemon: Pokemon[];
   lastUpdated: string;
 }
+
+export type FocusTarget =
+  | { type: 'pokemon'; lat: number; lng: number; name: string; id: string }
+  | { type: 'species'; name: string }
+  | null;

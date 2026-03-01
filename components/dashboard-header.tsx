@@ -2,14 +2,15 @@
 
 import { usePokemonStore } from '@/lib/store';
 import { formatDistanceToNow } from 'date-fns';
-import { Menu, Filter, MapPin } from 'lucide-react';
+import { Menu, Filter, MapPin, BarChart3 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface DashboardHeaderProps {
   onToggleSidebar?: () => void;
+  onToggleAnalytics?: () => void;
 }
 
-export function DashboardHeader({ onToggleSidebar }: DashboardHeaderProps) {
+export function DashboardHeader({ onToggleSidebar, onToggleAnalytics }: DashboardHeaderProps) {
   const { pokemon, lastUpdated, loading, error, filters } = usePokemonStore();
 
   const timeAgo =
@@ -77,6 +78,19 @@ export function DashboardHeader({ onToggleSidebar }: DashboardHeaderProps) {
             )}
           </div>
         </div>
+
+        {/* Spacer pushes analytics button to the right */}
+        <div className="flex-1" />
+
+        {/* Analytics toggle */}
+        <button
+          onClick={onToggleAnalytics}
+          className="pointer-events-auto flex-shrink-0 flex items-center gap-1.5 h-11 px-3.5 rounded-xl bg-background/80 backdrop-blur-xl border border-border/50 shadow-lg hover:bg-background/90 active:scale-95 transition-all"
+          aria-label="Open analytics"
+        >
+          <BarChart3 className="h-4.5 w-4.5 text-indigo-500" />
+          <span className="hidden sm:inline text-sm font-semibold text-foreground">Analytics</span>
+        </button>
       </div>
     </div>
   );

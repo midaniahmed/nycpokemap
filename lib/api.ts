@@ -25,8 +25,6 @@ export async function fetchPokemon(filters?: Partial<FilterOptions>): Promise<Po
     const since = Math.floor((now - 5000) / 1000);
     params.append('since', '0');
 
-    console.log(200, BACKEND_URL);
-
     const url = `${BACKEND_URL}?${params.toString()}`;
     const response = await fetch(url);
 
@@ -51,6 +49,11 @@ export async function fetchPokemon(filters?: Partial<FilterOptions>): Promise<Po
         cp: item.cp,
         attack: item.attack,
         defence: item.defence,
+
+        costume: item.costume > 0,
+        form: item.form,
+        shiny: item.shiny > 0,
+        mighty: item.mighty > 0,
       }));
     }
 

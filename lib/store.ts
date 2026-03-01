@@ -2,7 +2,7 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { Pokemon, FilterOptions } from './types';
+import type { Pokemon, FilterOptions, FocusTarget } from './types';
 import { getAllCategoriesFromJson, getAllPokemonFromJson } from './pokemon-data';
 import { fetchPokemon } from './api';
 
@@ -45,6 +45,11 @@ interface PokemonStore {
   setSortOrder: (order: 'asc' | 'desc') => void;
   setMinCp: (minCp: number | undefined) => void;
 
+  // Focus
+  focusTarget: FocusTarget;
+  setFocusTarget: (target: FocusTarget) => void;
+  clearFocusTarget: () => void;
+
   // Computed
   getFilteredPokemon: () => Pokemon[];
   getPokemonNamesByCategory: () => string[];
@@ -68,6 +73,7 @@ export const usePokemonStore = create<PokemonStore>()(
         loading: false,
         error: null,
         lastUpdated: null,
+        focusTarget: null,
 
         filters: {
           search: '',
@@ -318,6 +324,9 @@ export const usePokemonStore = create<PokemonStore>()(
           set((state) => ({
             filters: { ...state.filters, minCp },
           })),
+
+        setFocusTarget: (target) => set({ focusTarget: target }),
+        clearFocusTarget: () => set({ focusTarget: null }),
 
         getFilteredPokemon: () => {
           const state = get();
