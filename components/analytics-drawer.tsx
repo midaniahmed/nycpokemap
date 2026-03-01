@@ -1,12 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { usePokemonStore } from '@/lib/store';
 import type { Pokemon, FocusTarget } from '@/lib/types';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Sparkles, Shield, Swords, Zap, Crown, TrendingUp, BarChart3, MapPin } from 'lucide-react';
+import { Sparkles, Shield, Swords, Zap, Crown, TrendingUp, BarChart3, MapPin, Copy, Check } from 'lucide-react';
 
 interface AnalyticsDrawerProps {
   open: boolean;
@@ -171,7 +171,7 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
                         unit="CP"
                         color="bg-blue-500"
                         maxValue={analytics.maxCp}
-                        onClick={() => focusOnPokemon(p)}
+                        onLocate={() => focusOnPokemon(p)}
                       />
                     ))}
                   </div>
@@ -197,7 +197,7 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
                         unit="ATK"
                         color="bg-red-500"
                         maxValue={analytics.topAttackers[0]?.attack ?? 1}
-                        onClick={() => focusOnPokemon(p)}
+                        onLocate={() => focusOnPokemon(p)}
                       />
                     ))}
                   </div>
@@ -223,7 +223,7 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
                         unit="DEF"
                         color="bg-sky-500"
                         maxValue={analytics.topDefenders[0]?.defence ?? 1}
-                        onClick={() => focusOnPokemon(p)}
+                        onLocate={() => focusOnPokemon(p)}
                       />
                     ))}
                   </div>
@@ -238,26 +238,32 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
                   <TrendingUp className="h-4 w-4 text-emerald-500" />
                   <h3 className="text-sm font-semibold">Most Showing</h3>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   {analytics.mostShowing.map((p, i) => (
-                    <button
-                      key={`freq-${p.name}-${i}`}
-                      onClick={() => focusOnSpecies(p.name)}
-                      className="flex items-center gap-2.5 p-2 rounded-lg bg-muted/40 hover:bg-muted/70 transition-colors w-full text-left group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-muted-foreground w-5 text-right">#{i + 1}</span>
-                      <div className="w-8 h-8 rounded-lg bg-linear-to-br from-slate-700 to-slate-800 flex items-center justify-center shrink-0">
-                        <img src={p.image} alt={p.name} width={24} height={24} className="object-contain drop-shadow" />
+                    <div key={`freq-${p.name}-${i}`} className="rounded-xl border border-border/40 bg-muted/20 overflow-hidden">
+                      <div className="flex items-center gap-2.5 p-2">
+                        <span className="text-xs font-bold text-muted-foreground w-5 text-right">#{i + 1}</span>
+                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-slate-700 to-slate-800 flex items-center justify-center shrink-0">
+                          <img src={p.image} alt={p.name} width={24} height={24} className="object-contain drop-shadow" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-sm font-semibold capitalize truncate block">{p.name}</span>
+                          <span className="text-[10px] text-muted-foreground">#{p.id}</span>
+                        </div>
+                        <Badge variant="secondary" className="text-xs font-bold tabular-nums rounded-full">
+                          {p.count}×
+                        </Badge>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <span className="text-sm font-semibold capitalize truncate block">{p.name}</span>
-                        <span className="text-[10px] text-muted-foreground">#{p.id}</span>
+                      <div className="flex items-center justify-end gap-1.5 px-2 py-1.5 bg-muted/40 border-t border-border/30">
+                        <button
+                          onClick={() => focusOnSpecies(p.name)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 active:scale-95 transition-all dark:bg-indigo-900/40 dark:text-indigo-400 dark:hover:bg-indigo-900/60"
+                        >
+                          <MapPin className="h-3 w-3" />
+                          Show all on map
+                        </button>
                       </div>
-                      <MapPin className="h-3.5 w-3.5 text-muted-foreground/0 group-hover:text-muted-foreground transition-colors shrink-0" />
-                      <Badge variant="secondary" className="text-xs font-bold tabular-nums rounded-full">
-                        {p.count}×
-                      </Badge>
-                    </button>
+                    </div>
                   ))}
                 </div>
               </section>
@@ -292,6 +298,46 @@ function StatBox({ label, value, color }: { label: string; value: number; color:
   );
 }
 
+function CopyLocationButton({ lat, lng }: { lat: number; lng: number }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      const text = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      });
+    },
+    [lat, lng],
+  );
+
+  return (
+    <button
+      onClick={handleCopy}
+      className={`shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold transition-all active:scale-95 ${
+        copied
+          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400'
+          : 'bg-muted/80 text-muted-foreground hover:bg-muted hover:text-foreground'
+      }`}
+      title={`Copy ${lat.toFixed(6)}, ${lng.toFixed(6)}`}
+    >
+      {copied ? (
+        <>
+          <Check className="h-3 w-3" />
+          <span className="hidden xs:inline">Copied</span>
+        </>
+      ) : (
+        <>
+          <Copy className="h-3 w-3" />
+          <span className="hidden xs:inline">Copy</span>
+        </>
+      )}
+    </button>
+  );
+}
+
 function PokemonStatRow({
   rank,
   pokemon,
@@ -299,7 +345,7 @@ function PokemonStatRow({
   unit,
   color,
   maxValue,
-  onClick,
+  onLocate,
 }: {
   rank: number;
   pokemon: Pokemon;
@@ -307,34 +353,51 @@ function PokemonStatRow({
   unit: string;
   color: string;
   maxValue: number;
-  onClick: () => void;
+  onLocate: () => void;
 }) {
   const pct = maxValue > 0 ? Math.max((value / maxValue) * 100, 8) : 0;
   const image = pokemon.svgImage || pokemon.image;
 
   return (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-muted/50 active:bg-muted/70 transition-colors w-full text-left group cursor-pointer"
-    >
-      <span className="text-xs font-bold text-muted-foreground w-4 text-right">{rank}</span>
-      <div className="w-7 h-7 rounded-md bg-linear-to-br from-slate-500 to-slate-800 flex items-center justify-center shrink-0">
-        <img src={image} alt={pokemon.name} width={20} height={20} className="object-contain drop-shadow" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-0.5">
-          <span className="text-xs font-semibold capitalize truncate">{pokemon.name}</span>
-          <div className="flex items-center gap-1 ml-1 shrink-0">
-            <MapPin className="h-3 w-3 text-muted-foreground/0 group-hover:text-muted-foreground transition-colors" />
-            <span className="text-[10px] font-bold text-muted-foreground tabular-nums">
+    <div className="rounded-xl border border-border/40 bg-muted/20 overflow-hidden">
+      {/* Top: Pokemon info */}
+      <div className="flex items-center gap-2.5 p-2 pb-1.5">
+        <span className="text-xs font-bold text-muted-foreground w-4 text-right">{rank}</span>
+        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-slate-500 to-slate-800 flex items-center justify-center shrink-0">
+          <img src={image} alt={pokemon.name} width={22} height={22} className="object-contain drop-shadow" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold capitalize truncate">{pokemon.name}</span>
+            <Badge variant="secondary" className="text-[10px] font-bold tabular-nums rounded-full px-1.5 py-0 h-4 ml-1 shrink-0">
               {value} {unit}
-            </span>
+            </Badge>
+          </div>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden mt-1">
+            <div className={`h-full ${color} rounded-full transition-all duration-500`} style={{ width: `${pct}%` }} />
           </div>
         </div>
-        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-          <div className={`h-full ${color} rounded-full transition-all duration-500`} style={{ width: `${pct}%` }} />
-        </div>
       </div>
-    </button>
+
+      {/* Bottom: Location actions bar — always visible */}
+      <div className="flex items-center gap-1.5 px-2 py-1.5 bg-muted/40 border-t border-border/30">
+        <MapPin className="h-3 w-3 text-muted-foreground/70 shrink-0" />
+        <span className="text-[10px] text-muted-foreground tabular-nums truncate flex-1">
+          {pokemon.lat.toFixed(5)}, {pokemon.lng.toFixed(5)}
+        </span>
+        <CopyLocationButton lat={pokemon.lat} lng={pokemon.lng} />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onLocate();
+          }}
+          className="shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 active:scale-95 transition-all dark:bg-indigo-900/40 dark:text-indigo-400 dark:hover:bg-indigo-900/60"
+          title="Show on map"
+        >
+          <MapPin className="h-3 w-3" />
+          <span className="hidden xs:inline">Map</span>
+        </button>
+      </div>
+    </div>
   );
 }

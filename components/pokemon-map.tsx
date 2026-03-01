@@ -246,6 +246,33 @@ export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapPro
               return badges.length > 0 ? `<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:4px; margin-top:6px;">${badges.join('')}</div>` : '';
             })()}
 
+            <!-- Location -->
+            <div style="margin-top:8px; border-top:1px solid #f3f4f6; padding-top:8px;">
+              <!--
+                <div style="display:flex; align-items:center; gap:4px; margin-bottom:5px;">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span style="font-size:10px; font-weight:600; color:#6b7280; font-variant-numeric:tabular-nums;">
+                    ${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}
+                  </span>
+                </div>
+              -->
+              <div
+                class="pokemon-copy-btn"
+                data-coords="${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}"
+                style="
+                  display:flex; align-items:center; justify-content:center; gap:5px;
+                  padding: 7px 10px; border-radius: 8px;
+                  background: #6366f1; cursor: pointer;
+                  transition: opacity 0.15s;
+                "
+                title="Copy coordinates to clipboard"
+              >
+                <svg class="copy-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <svg class="check-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="copy-label" style="font-size:11px; font-weight:700; color:white; letter-spacing:0.2px;">Copy Location</span>
+              </div>
+            </div>
+
             <!-- Timer -->
             ${timerSection}
           </div>
@@ -260,8 +287,61 @@ export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapPro
       }).setContent(popupContent);
 
       marker.bindPopup(popup);
+
+      // Attach copy handler when popup opens
+      marker.on('popupopen', () => {
+        const popupEl = popup.getElement();
+        if (!popupEl) return;
+        const copyBtn = popupEl.querySelector('.pokemon-copy-btn') as HTMLElement | null;
+        if (copyBtn && !copyBtn.dataset.bound) {
+          copyBtn.dataset.bound = '1';
+          copyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const coords = copyBtn.dataset.coords || '';
+            navigator.clipboard.writeText(coords).then(() => {
+              const copyIcon = copyBtn.querySelector('.copy-icon') as HTMLElement;
+              const checkIcon = copyBtn.querySelector('.check-icon') as HTMLElement;
+              const label = copyBtn.querySelector('.copy-label') as HTMLElement;
+              if (copyIcon) copyIcon.style.display = 'none';
+              if (checkIcon) checkIcon.style.display = '';
+              if (label) label.textContent = 'Copied!';
+              copyBtn.style.background = '#10b981';
+              setTimeout(() => {
+                if (copyIcon) copyIcon.style.display = '';
+                if (checkIcon) checkIcon.style.display = 'none';
+                if (label) label.textContent = 'Copy Location';
+                copyBtn.style.background = '#6366f1';
+              }, 1400);
+            });
+          });
+        }
+      });
+
+      // Open popup on hover, but keep it open so users can interact with it (copy location etc.)
       marker.on('mouseover', () => marker.openPopup());
-      marker.on('mouseout', () => marker.closePopup());
+      marker.on('click', () => marker.openPopup());
+
+      // Only close popup on mouseout if the mouse hasn't moved into the popup itself
+      marker.on('mouseout', (e: any) => {
+        const popupEl = popup.getElement();
+        if (!popupEl) {
+          marker.closePopup();
+          return;
+        }
+        // Small delay to let the mouse reach the popup
+        setTimeout(() => {
+          if (!popupEl.matches(':hover')) {
+            marker.closePopup();
+          } else {
+            // Close when leaving the popup
+            const closeHandler = () => {
+              marker.closePopup();
+              popupEl.removeEventListener('mouseleave', closeHandler);
+            };
+            popupEl.addEventListener('mouseleave', closeHandler);
+          }
+        }, 100);
+      });
 
       clusterGroup.addLayer(marker);
     });
