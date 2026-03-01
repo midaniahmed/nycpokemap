@@ -1,7 +1,7 @@
 import type { Pokemon, ApiResponse, FilterOptions } from './types';
 import { getPokemonIdsByNames } from './pokemon-data';
 
-const BACKEND_URL = 'http://localhost:3001/api/pokemap';
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001/api/pokemap';
 
 export async function fetchPokemon(filters?: Partial<FilterOptions>): Promise<Pokemon[]> {
   try {
@@ -43,7 +43,7 @@ export async function fetchPokemon(filters?: Partial<FilterOptions>): Promise<Po
         lat: item.lat,
         lng: item.lng,
         image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.pokemon_id}.png`,
-        svgImage : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${item.pokemon_id}.svg`,
+        svgImage: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${item.pokemon_id}.svg`,
         timestamp: item.despawn?.toString(),
         despawn: item.despawn,
         inserted: item.inserted,
