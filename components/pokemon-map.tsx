@@ -23,8 +23,6 @@ export function PokemonMap() {
   const { pokemon: allPokemon, getFilteredPokemon, loading } = usePokemonStore();
   const filteredPokemon = getFilteredPokemon();
 
-  console.log("---------->", filteredPokemon, allPokemon);
-
   // Initialize map
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
@@ -50,7 +48,6 @@ export function PokemonMap() {
       }
     };
   }, []);
-
 
   // Update markers when filtered Pokemon changes
   useEffect(() => {
@@ -109,12 +106,10 @@ export function PokemonMap() {
         }
       }
 
-      const cpText = p.cp !== undefined && p.cp !== null && p.cp !== -1
-        ? `<div style="font-size: 14px; font-weight: 600; color: #2563eb; margin-top: 4px;">CP: ${p.cp}</div>`
-        : '';
+      const cpText = p.cp !== undefined && p.cp !== null && p.cp !== -1 ? `<div style="font-size: 14px; font-weight: 600; color: #2563eb; margin-top: 4px;">CP: ${p.cp}</div>` : '';
 
       const popup = L.popup({ offset: [0, -12] }).setContent(
-        `<div style="text-align:center; padding: 4px;"><img src="${p.svgImage || p.image}" width="64" height="64" style="display: block; margin: 0 auto;" /><div style="font-size: 14px; font-weight: 600; margin-top: 4px;">${p.name}</div>${cpText}${remainingText}</div>`
+        `<div style="text-align:center; padding: 4px;"><img src="${p.svgImage || p.image}" width="64" height="64" style="display: block; margin: 0 auto;" /><div style="font-size: 14px; font-weight: 600; margin-top: 4px;">${p.name}</div>${cpText}${remainingText}</div>`,
       );
       marker.bindPopup(popup);
 
@@ -140,8 +135,11 @@ export function PokemonMap() {
       });
 
       const uniqueMarkers = Array.from(uniqueMap.values());
-      const items = uniqueMarkers.slice(0, maxShow).map((m: any) =>
-        `<div style="
+      const items = uniqueMarkers
+        .slice(0, maxShow)
+        .map(
+          (m: any) =>
+            `<div style="
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -169,11 +167,13 @@ export function PokemonMap() {
             color: #374151;
             margin-top: 4px;
           ">#${m.options.pokemonId}</span>
-        </div>`
-      ).join('');
+        </div>`,
+        )
+        .join('');
 
-      const extra = uniqueMarkers.length > maxShow
-        ? `<div style="
+      const extra =
+        uniqueMarkers.length > maxShow
+          ? `<div style="
           grid-column: 1 / -1;
           text-align: center;
           font-size: 12px;
@@ -183,10 +183,9 @@ export function PokemonMap() {
           border-radius: 6px;
           margin-top: 4px;
         ">+${uniqueMarkers.length - maxShow} more unique</div>`
-        : '';
+          : '';
 
-      const html =
-        `<div style="
+      const html = `<div style="
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 8px;
@@ -240,7 +239,6 @@ export function PokemonMap() {
           <p className="text-sm text-muted-foreground">No Pokémon found with current filters</p>
         </div>
       )}
-
     </div>
   );
 }

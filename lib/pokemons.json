@@ -21,7 +21,8 @@
       "id": 3,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -69,7 +70,8 @@
       "id": 9,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -93,7 +95,8 @@
       "id": 12,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -141,7 +144,8 @@
       "id": 18,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/18.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -245,7 +249,8 @@
       "id": 31,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/31.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -285,7 +290,8 @@
       "id": 36,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/36.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -317,7 +323,8 @@
       "id": 40,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/40.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -333,7 +340,8 @@
       "id": 42,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/42.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -349,7 +357,8 @@
       "id": 44,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/44.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -357,7 +366,8 @@
       "id": 45,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/45.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -373,7 +383,8 @@
       "id": 47,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/47.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -389,7 +400,8 @@
       "id": 49,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/49.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -405,7 +417,8 @@
       "id": 51,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/51.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -437,7 +450,8 @@
       "id": 55,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/55.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -453,7 +467,8 @@
       "id": 57,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/57.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -485,7 +500,8 @@
       "id": 61,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/61.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -493,7 +509,8 @@
       "id": 62,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/62.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -517,7 +534,8 @@
       "id": 65,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -533,7 +551,8 @@
       "id": 67,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/67.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -541,7 +560,8 @@
       "id": 68,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/68.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -557,7 +577,8 @@
       "id": 70,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/70.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -565,7 +586,8 @@
       "id": 71,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/71.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -573,7 +595,8 @@
       "id": 72,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/72.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -581,7 +604,8 @@
       "id": 73,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/73.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -605,7 +629,8 @@
       "id": 76,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/76.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -621,7 +646,8 @@
       "id": 78,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -637,7 +663,8 @@
       "id": 80,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/80.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -693,7 +720,8 @@
       "id": 87,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/87.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -725,7 +753,8 @@
       "id": 91,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/91.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -741,7 +770,8 @@
       "id": 93,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/93.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -749,7 +779,8 @@
       "id": 94,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -789,7 +820,8 @@
       "id": 99,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/99.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -917,7 +949,8 @@
       "id": 115,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -925,7 +958,8 @@
       "id": 116,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/116.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -933,7 +967,8 @@
       "id": 117,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/117.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -949,7 +984,8 @@
       "id": 119,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/119.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -965,7 +1001,8 @@
       "id": 121,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/121.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -973,7 +1010,8 @@
       "id": 122,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/122.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1037,7 +1075,8 @@
       "id": 130,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/130.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1053,7 +1092,8 @@
       "id": 132,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1069,7 +1109,8 @@
       "id": 134,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/134.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1077,7 +1118,8 @@
       "id": 135,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1085,7 +1127,8 @@
       "id": 136,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/136.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1101,7 +1144,8 @@
       "id": 138,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/138.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1109,7 +1153,8 @@
       "id": 139,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/139.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1117,7 +1162,8 @@
       "id": 140,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/140.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1125,7 +1171,8 @@
       "id": 141,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/141.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1150,7 +1197,8 @@
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png",
       "categories": [
         "legendary",
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1168,7 +1216,8 @@
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png",
       "categories": [
         "legendary",
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1184,7 +1233,8 @@
       "id": 148,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/148.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1192,7 +1242,8 @@
       "id": 149,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png",
       "categories": [
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1201,7 +1252,8 @@
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
       "categories": [
         "legendary",
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {
@@ -1210,7 +1262,8 @@
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png",
       "categories": [
         "mythical",
-        "gen-i"
+        "gen-i",
+        "gen-i-missing"
       ]
     },
     {

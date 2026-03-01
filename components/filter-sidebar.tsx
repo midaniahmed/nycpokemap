@@ -7,7 +7,8 @@ import { Slider } from '@/components/ui/slider';
 import { CategoryFilter } from './category-filter';
 import { PokemonSelector } from './pokemon-selector';
 import { usePokemonStore } from '@/lib/store';
-import { RotateCcw, Filter, X, ArrowUpDown, Hash, Search, Tags, List, Zap } from 'lucide-react';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
+import { RotateCcw, Filter, X, ArrowUpDown, Hash, Search, Tags, List, Zap, ChevronDown } from 'lucide-react';
 
 export function FilterSidebar() {
   const { filters, clearFilters, setSearchQuery, setIdSearch, setSortBy, setMinCp, getFilteredPokemon, pokemon } = usePokemonStore();
@@ -139,30 +140,7 @@ export function FilterSidebar() {
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-4">
-          {/* CP Filter Section */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Zap className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-semibold text-foreground">Minimum CP</span>
-              {filters.minCp !== undefined && filters.minCp !== null && filters.minCp > 0 && (
-                <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
-                  {filters.minCp}
-                </Badge>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Slider value={[filters.minCp ?? 0]} onValueChange={(value) => setMinCp(value[0] > 0 ? value[0] : undefined)} min={0} max={5000} step={100} className="w-full" />
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>0</span>
-                <span className="font-medium text-foreground">
-                  {filters.minCp !== undefined && filters.minCp !== null && filters.minCp > 0 ? `CP &gt; ${filters.minCp}` : 'No filter'}
-                </span>
-                <span>5000</span>
-              </div>
-            </div>
-          </div>
 
-          <Separator />
           {/* Categories Section */}
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -192,16 +170,45 @@ export function FilterSidebar() {
             </div>
             <PokemonSelector />
           </div>
+
         </div>
       </div>
 
       {/* Footer */}
-      {/* <div className="p-4 border-t border-border bg-muted/30">
-        <Button variant="outline" size="sm" className="w-full" onClick={clearFilters} disabled={!hasActiveFilters}>
+      <div className="p-4 border-t border-border bg-muted/30">
+        {/* <Button variant="outline" size="sm" className="w-full" onClick={clearFilters} disabled={!hasActiveFilters}>
           <RotateCcw size={14} className="mr-2" />
           Reset All Filters
-        </Button>
-      </div> */}
+        </Button> */}
+         {/* CP Filter Section */}
+         <Collapsible>
+            <CollapsibleTrigger className="flex items-center justify-between w-full group">
+              <div className="flex items-center gap-2">
+                <Zap className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-semibold text-foreground">Minimum CP</span>
+                {filters.minCp !== undefined && filters.minCp !== null && filters.minCp > 0 && (
+                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
+                    {filters.minCp}
+                  </Badge>
+                )}
+              </div>
+              <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="space-y-2 pt-3">
+                <Slider value={[filters.minCp ?? 0]} onValueChange={(value) => setMinCp(value[0] > 0 ? value[0] : undefined)} min={0} max={5000} step={100} className="w-full" />
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>0</span>
+                  <span className="font-medium text-foreground">
+                    {filters.minCp !== undefined && filters.minCp !== null && filters.minCp > 0 ? `CP &gt; ${filters.minCp}` : 'No filter'}
+                  </span>
+                  <span>5000</span>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
+      </div>
     </div>
   );
 }

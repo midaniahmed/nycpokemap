@@ -25,6 +25,8 @@ export async function fetchPokemon(filters?: Partial<FilterOptions>): Promise<Po
     const since = Math.floor((now - 5000) / 1000);
     params.append('since', '0');
 
+    console.log(200, BACKEND_URL);
+
     const url = `${BACKEND_URL}?${params.toString()}`;
     const response = await fetch(url);
 
@@ -33,8 +35,6 @@ export async function fetchPokemon(filters?: Partial<FilterOptions>): Promise<Po
     }
 
     const data = await response.json();
-
-    console.log(200, '--->', data.length);
 
     if (Array.isArray(data)) {
       return data.map((item: any) => ({

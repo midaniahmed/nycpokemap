@@ -34,7 +34,7 @@ export function CategoryFilter() {
                 className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
               />
               <Label htmlFor={`category-${category}`} className="text-xs font-normal cursor-pointer flex-1 flex items-center justify-between">
-                <span className="capitalize">{category}</span>
+                <span className="">{category}</span>
                 {filters.categories.includes(category) && (
                   <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
                     Active

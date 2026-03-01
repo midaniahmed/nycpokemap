@@ -52,7 +52,10 @@ export function PokemonSelector() {
   const isAllSelected = filters.selectedPokemon.length === uniquePokemon.length && uniquePokemon.length > 0;
   const isSomeSelected = filters.selectedPokemon.length > 0;
 
-  const filteredPokemon = uniquePokemon.filter((pokemon) => pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredPokemon = uniquePokemon.filter((pokemon) => {
+    const query = searchQuery.toLowerCase().trim();
+    return pokemon.name.toLowerCase().includes(query) || String(pokemon.id).includes(query);
+  });
 
   return (
     <div className="space-y-3">
@@ -74,7 +77,7 @@ export function PokemonSelector() {
       {/* Search within Pokemon */}
       <div className="relative">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
-        <Input type="text" placeholder="Search Pokémon..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-8 h-8 text-xs" />
+        <Input type="text" placeholder="Search by name or ID..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-8 h-8 text-xs" />
       </div>
 
       {/* Pokemon list */}
