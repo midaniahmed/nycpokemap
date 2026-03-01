@@ -18,7 +18,6 @@ export interface Pokemon {
 
 export interface FilterOptions {
   search: string;
-  idSearch: string;
   categories: string[];
   selectedPokemon: string[];
   sortBy?: 'name' | 'id' | 'none';

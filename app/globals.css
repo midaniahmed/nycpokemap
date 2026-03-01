@@ -128,10 +128,30 @@
 .pokemon-cluster-tooltip {
   background: white !important;
   border: 1px solid #e5e7eb !important;
-  border-radius: 10px !important;
+  border-radius: 12px !important;
   padding: 8px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
 }
 .pokemon-cluster-tooltip::before {
   border-top-color: white !important;
 }
+
+/* Sidebar custom scrollbar */
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
+}
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
+}
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+

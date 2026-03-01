@@ -296,7 +296,6 @@ export const usePokemonStore = create<PokemonStore>()(
           set({
             filters: {
               search: '',
-              idSearch: '',
               categories: [],
               selectedPokemon: [],
               sortBy: 'none',

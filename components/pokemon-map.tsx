@@ -14,7 +14,11 @@ const NYC_CENTER = { lat: 40.7128, lng: -74.006 };
 const INITIAL_ZOOM = 12;
 const GROUP_OVER = 5;
 
-export function PokemonMap() {
+interface PokemonMapProps {
+  onToggleSidebar?: () => void;
+}
+
+export function PokemonMap({ onToggleSidebar }: PokemonMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
@@ -28,7 +32,8 @@ export function PokemonMap() {
     if (!mapContainer.current || map.current) return;
 
     try {
-      map.current = L.map(mapContainer.current).setView([NYC_CENTER.lat, NYC_CENTER.lng], INITIAL_ZOOM);
+      map.current = L.map(mapContainer.current, { zoomControl: false }).setView([NYC_CENTER.lat, NYC_CENTER.lng], INITIAL_ZOOM);
+      L.control.zoom({ position: 'bottomright' }).addTo(map.current);
 
       // Add OpenStreetMap tiles (free, no API key required)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -217,17 +222,17 @@ export function PokemonMap() {
   }, [filteredPokemon]);
 
   return (
-    <div className="relative w-full h-full flex flex-col bg-gray-100">
-      <DashboardHeader />
-      <div ref={mapContainer} className="w-full h-full" />
+    <div className="relative w-full h-full flex flex-col bg-muted/30">
+      <div ref={mapContainer} className="absolute inset-0 z-0" />
+      <DashboardHeader onToggleSidebar={onToggleSidebar} />
 
       {/* Loading overlay */}
       {loading && (
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center z-10">
-          <div className="bg-white rounded-lg p-4 shadow-lg">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              <span className="text-sm font-medium">Loading Pokémon...</span>
+        <div className="absolute inset-0 bg-background/30 backdrop-blur-[2px] flex items-center justify-center z-10">
+          <div className="bg-background/80 backdrop-blur-xl rounded-2xl p-5 shadow-xl border border-border/40">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <span className="text-sm font-medium text-foreground">Loading Pokémon...</span>
             </div>
           </div>
         </div>
@@ -235,8 +240,8 @@ export function PokemonMap() {
 
       {/* Empty state */}
       {!loading && filteredPokemon.length === 0 && allPokemon.length > 0 && (
-        <div className="absolute bottom-4 left-4 bg-white rounded-lg p-3 shadow-lg pointer-events-auto">
-          <p className="text-sm text-muted-foreground">No Pokémon found with current filters</p>
+        <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-xs bg-background/80 backdrop-blur-xl rounded-2xl p-4 shadow-xl border border-border/40 pointer-events-auto">
+          <p className="text-sm text-muted-foreground text-center md:text-left">No Pokémon found with current filters</p>
         </div>
       )}
     </div>
