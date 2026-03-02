@@ -66,7 +66,7 @@ export function PokemonProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Auto-refresh every 30 seconds (using current filters)
-    fetchIntervalRef.current = setInterval(fetchData, 30000);
+    fetchIntervalRef.current = setInterval(fetchData, 60000);
 
     return () => {
       if (fetchIntervalRef.current) {
@@ -97,7 +97,7 @@ export function PokemonProvider({ children }: { children: React.ReactNode }) {
         clearTimeout(filterDebounceRef.current);
       }
     };
-  }, [filters.search, filters.idSearch, filters.categories.join(','), filters.selectedPokemon.join(','), fetchPokemonWithFilters]);
+  }, [filters.search, filters.categories.join(','), filters.selectedPokemon.join(','), fetchPokemonWithFilters]);
 
   return <>{children}</>;
 }
