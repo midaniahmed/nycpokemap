@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { usePokemonStore } from '@/lib/store';
 import { DashboardHeader } from './dashboard-header';
+import { Search, X } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
@@ -24,9 +25,21 @@ export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapPro
   const map = useRef<L.Map | null>(null);
   const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const initialFitDone = useRef(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const [mapSearchQuery, setMapSearchQuery] = useState('');
 
   const { pokemon: allPokemon, getFilteredPokemon, loading, focusTarget, clearFocusTarget } = usePokemonStore();
-  const filteredPokemon = getFilteredPokemon();
+  const storeFiltered = getFilteredPokemon();
+
+  // Apply local map search on top of store filters
+  const filteredPokemon = useMemo(() => {
+    if (!mapSearchQuery.trim()) return storeFiltered;
+    const q = mapSearchQuery.trim().toLowerCase();
+    return storeFiltered.filter(
+      (p) => p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)
+    );
+  }, [storeFiltered, mapSearchQuery]);
 
   // Initialize map
   useEffect(() => {
@@ -542,6 +555,40 @@ export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapPro
     <div className="relative w-full h-full flex flex-col bg-muted/30">
       <div ref={mapContainer} className="absolute inset-0 z-0" />
       <DashboardHeader onToggleSidebar={onToggleSidebar} onToggleAnalytics={onToggleAnalytics} />
+
+      {/* Map search bar - top center */}
+      <div className="absolute top-[68px] md:top-[72px] left-1/2 -translate-x-1/2 z-20 w-[calc(100%-6rem)] max-w-xs sm:max-w-sm pointer-events-auto">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={mapSearchQuery}
+            onChange={(e) => setMapSearchQuery(e.target.value)}
+            placeholder="Search by name or ID…"
+            className="w-full h-10 pl-9 pr-9 rounded-xl bg-background/80 backdrop-blur-xl border border-border/50 shadow-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all"
+          />
+          {mapSearchQuery && (
+            <button
+              onClick={() => {
+                setMapSearchQuery('');
+                searchInputRef.current?.focus();
+              }}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-md hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Clear search"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+        {mapSearchQuery.trim() && (
+          <div className="mt-1.5 text-center">
+            <span className="inline-block text-[11px] font-medium text-muted-foreground bg-background/70 backdrop-blur-xl px-2.5 py-0.5 rounded-full border border-border/40 shadow-sm">
+              {filteredPokemon.length} result{filteredPokemon.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* Loading overlay */}
       {loading && (
