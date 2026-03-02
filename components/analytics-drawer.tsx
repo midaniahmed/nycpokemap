@@ -6,7 +6,7 @@ import type { Pokemon, FocusTarget } from '@/lib/types';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Sparkles, Shield, Swords, Zap, Crown, TrendingUp, BarChart3, MapPin, Copy, Check } from 'lucide-react';
+import { Sparkles, Shield, Swords, Zap, Crown, TrendingUp, BarChart3, MapPin, Copy, Check, Search, List } from 'lucide-react';
 
 interface AnalyticsDrawerProps {
   open: boolean;
@@ -16,6 +16,7 @@ interface AnalyticsDrawerProps {
 export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
   const { getFilteredPokemon, setFocusTarget } = usePokemonStore();
   const pokemon = getFilteredPokemon();
+  const [pokemonListSearch, setPokemonListSearch] = useState('');
 
   const focusOnPokemon = (p: Pokemon) => {
     setFocusTarget({ type: 'pokemon', lat: p.lat, lng: p.lng, name: p.name, id: p.id });
@@ -72,6 +73,11 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
       .slice(0, 8)
       .map(([name, data]) => ({ name, ...data }));
 
+    // All unique Pokémon sorted alphabetically
+    const allUnique = Array.from(nameCounts.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([name, data]) => ({ name, ...data }));
+
     return {
       total: pokemon.length,
       shinyCount,
@@ -84,6 +90,7 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
       topDefenders,
       topCp,
       mostShowing,
+      allUnique,
     };
   }, [pokemon]);
 
@@ -180,56 +187,6 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
 
               <Separator />
 
-              {/* ===== Top Attack ===== */}
-              {analytics.topAttackers.length > 0 && (
-                <section>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Swords className="h-4 w-4 text-red-500" />
-                    <h3 className="text-sm font-semibold">Top Attack</h3>
-                  </div>
-                  <div className="space-y-1.5">
-                    {analytics.topAttackers.map((p, i) => (
-                      <PokemonStatRow
-                        key={`atk-${p.id}-${p.lat}-${i}`}
-                        rank={i + 1}
-                        pokemon={p}
-                        value={p.attack ?? 0}
-                        unit="ATK"
-                        color="bg-red-500"
-                        maxValue={analytics.topAttackers[0]?.attack ?? 1}
-                        onLocate={() => focusOnPokemon(p)}
-                      />
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {analytics.topAttackers.length > 0 && analytics.topDefenders.length > 0 && <Separator />}
-
-              {/* ===== Top Defence ===== */}
-              {analytics.topDefenders.length > 0 && (
-                <section>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Shield className="h-4 w-4 text-sky-500" />
-                    <h3 className="text-sm font-semibold">Top Defence</h3>
-                  </div>
-                  <div className="space-y-1.5">
-                    {analytics.topDefenders.map((p, i) => (
-                      <PokemonStatRow
-                        key={`def-${p.id}-${p.lat}-${i}`}
-                        rank={i + 1}
-                        pokemon={p}
-                        value={p.defence ?? 0}
-                        unit="DEF"
-                        color="bg-sky-500"
-                        maxValue={analytics.topDefenders[0]?.defence ?? 1}
-                        onLocate={() => focusOnPokemon(p)}
-                      />
-                    ))}
-                  </div>
-                </section>
-              )}
-
               <Separator />
 
               {/* ===== Most Showing Pokémon ===== */}
@@ -265,6 +222,58 @@ export function AnalyticsDrawer({ open, onOpenChange }: AnalyticsDrawerProps) {
                       </div>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              <Separator />
+
+              {/* ===== All Loaded Pokémon (unique) ===== */}
+              <section>
+                <div className="flex items-center gap-2 mb-3">
+                  <List className="h-4 w-4 text-sky-500" />
+                  <h3 className="text-sm font-semibold">All Loaded Pokémon</h3>
+                  <Badge variant="outline" className="ml-auto text-[10px] tabular-nums rounded-full">
+                    {analytics.allUnique.length} unique
+                  </Badge>
+                </div>
+
+                {/* Search input */}
+                <div className="relative mb-3">
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
+                  <input
+                    type="text"
+                    placeholder="Search Pokémon…"
+                    value={pokemonListSearch}
+                    onChange={(e) => setPokemonListSearch(e.target.value)}
+                    className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-border/60 bg-muted/30 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                  />
+                </div>
+
+                <div className="space-y-1.5 max-h-[360px] overflow-y-auto sidebar-scrollbar">
+                  {analytics.allUnique
+                    .filter((p) => p.name.toLowerCase().includes(pokemonListSearch.toLowerCase()))
+                    .map((p) => (
+                      <button
+                        key={`all-${p.name}`}
+                        onClick={() => focusOnSpecies(p.name)}
+                        className="w-full flex items-center gap-2.5 p-2 rounded-xl border border-border/40 bg-muted/20 hover:bg-indigo-50 hover:border-indigo-200 dark:hover:bg-indigo-900/20 dark:hover:border-indigo-800/50 active:scale-[0.98] transition-all text-left group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-slate-700 to-slate-800 flex items-center justify-center shrink-0">
+                          <img src={p.image} alt={p.name} width={24} height={24} className="object-contain drop-shadow" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-sm font-semibold capitalize truncate block">{p.name}</span>
+                          <span className="text-[10px] text-muted-foreground">#{p.id}</span>
+                        </div>
+                        <Badge variant="secondary" className="text-xs font-bold tabular-nums rounded-full shrink-0">
+                          {p.count}×
+                        </Badge>
+                        <MapPin className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-indigo-500 transition-colors shrink-0" />
+                      </button>
+                    ))}
+                  {analytics.allUnique.filter((p) => p.name.toLowerCase().includes(pokemonListSearch.toLowerCase())).length === 0 && (
+                    <div className="text-xs text-muted-foreground text-center py-4">No Pokémon match your search</div>
+                  )}
                 </div>
               </section>
             </>
