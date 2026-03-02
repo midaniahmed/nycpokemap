@@ -52,7 +52,7 @@
       "name": "blastoise",
       "id": 9,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png",
-      "categories": ["gen-i", "gen-i-missing"]
+      "categories": ["gen-i"]
     },
     {
       "name": "caterpie",
@@ -556,7 +556,7 @@
       "name": "haunter",
       "id": 93,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/93.png",
-      "categories": ["gen-i", "gen-i-missing"]
+      "categories": ["gen-i"]
     },
     {
       "name": "gengar",

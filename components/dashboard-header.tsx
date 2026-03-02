@@ -23,7 +23,7 @@ export function DashboardHeader({ onToggleSidebar, onToggleAnalytics }: Dashboar
     (filters.minCp !== undefined && filters.minCp !== null && filters.minCp > 0 ? 1 : 0);
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
+    <div className="absolute bottom-12 left-0 right-0 z-20 pointer-events-none">
       <div className="m-3 md:m-4 flex items-start gap-2">
         {/* Mobile filter toggle */}
         <button

@@ -47,7 +47,7 @@ export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapPro
 
     try {
       map.current = L.map(mapContainer.current, { zoomControl: false }).setView([NYC_CENTER.lat, NYC_CENTER.lng], INITIAL_ZOOM);
-      L.control.zoom({ position: 'bottomright' }).addTo(map.current);
+      L.control.zoom({ position: 'topleft' }).addTo(map.current);
 
       // Add OpenStreetMap tiles (free, no API key required)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
