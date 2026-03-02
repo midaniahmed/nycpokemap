@@ -292,7 +292,7 @@
       "name": "venomoth",
       "id": 49,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/49.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "diglett",
@@ -304,7 +304,7 @@
       "name": "dugtrio",
       "id": 51,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/51.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "meowth",
@@ -370,7 +370,7 @@
       "name": "poliwrath",
       "id": 62,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/62.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "abra",
@@ -436,7 +436,7 @@
       "name": "tentacruel",
       "id": 73,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/73.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "geodude",
@@ -466,7 +466,7 @@
       "name": "rapidash",
       "id": 78,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "slowpoke",
@@ -478,7 +478,7 @@
       "name": "slowbro",
       "id": 80,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/80.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "magnemite",
@@ -520,7 +520,7 @@
       "name": "dewgong",
       "id": 87,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/87.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "grimer",
@@ -544,7 +544,7 @@
       "name": "cloyster",
       "id": 91,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/91.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "gastly",
@@ -724,7 +724,7 @@
       "name": "starmie",
       "id": 121,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/121.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "mr-mime",
@@ -832,7 +832,7 @@
       "name": "omastar",
       "id": 139,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/139.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "kabuto",
