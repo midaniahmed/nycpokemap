@@ -868,7 +868,7 @@
       "name": "zapdos",
       "id": 145,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png",
-      "categories": ["legendary", "gen-i"]
+      "categories": ["legendary", "gen-i", "gen-i-missing"]
     },
     {
       "name": "moltres",
@@ -886,7 +886,7 @@
       "name": "dragonair",
       "id": 148,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/148.png",
-      "categories": ["gen-i", "gen-i-missing"]
+      "categories": ["gen-i"]
     },
     {
       "name": "dragonite",
