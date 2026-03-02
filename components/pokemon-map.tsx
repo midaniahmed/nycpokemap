@@ -557,7 +557,7 @@ export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapPro
       <DashboardHeader onToggleSidebar={onToggleSidebar} onToggleAnalytics={onToggleAnalytics} />
 
       {/* Map search bar - top center */}
-      <div className="absolute top-[68px] md:top-[72px] left-1/2 -translate-x-1/2 z-20 w-[calc(100%-6rem)] max-w-xs sm:max-w-sm pointer-events-auto">
+      <div className="absolute top-2 md:top-2 left-1/2 -translate-x-1/2 z-20 w-[calc(100%-6rem)] max-w-xs sm:max-w-sm pointer-events-auto">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input

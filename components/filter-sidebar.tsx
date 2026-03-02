@@ -8,13 +8,7 @@ import { CategoryFilter } from './category-filter';
 import { PokemonSelector } from './pokemon-selector';
 import { usePokemonStore } from '@/lib/store';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { RotateCcw, Filter, X, ArrowUpDown, Hash, Search, Tags, List, Zap, ChevronDown, MapPin } from 'lucide-react';
 
 interface FilterSidebarProps {
@@ -26,8 +20,6 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
   const { filters, clearFilters, setSearchQuery, setIdSearch, setSortBy, setMinCp, getFilteredPokemon, pokemon } = usePokemonStore();
 
   const filteredPokemon = getFilteredPokemon();
-  const totalCount = pokemon.length;
-  const filteredCount = filteredPokemon.length;
 
   const hasActiveFilters =
     filters.search.length > 0 ||
@@ -72,16 +64,13 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
                 {activeFilterCount}
               </Badge>
             )}
+            {hasActiveFilters && (
+              <button onClick={clearFilters} className="text-[11px] text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1">
+                <RotateCcw className="h-3 w-3" />
+                Reset
+              </button>
+            )}
           </div>
-          {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="text-[11px] text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1"
-            >
-              <RotateCcw className="h-3 w-3" />
-              Reset
-            </button>
-          )}
         </div>
         {/* <div className="text-xs text-muted-foreground">
           {filteredCount === totalCount ? (
@@ -158,7 +147,6 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
       {/* Content */}
       <div className="flex-1 overflow-y-auto sidebar-scrollbar">
         <div className="p-3 space-y-4">
-
           {/* Categories Section */}
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -188,7 +176,6 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
             </div>
             <PokemonSelector />
           </div>
-
         </div>
       </div>
 
