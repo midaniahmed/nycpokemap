@@ -340,7 +340,7 @@
       "name": "primeape",
       "id": 57,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/57.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "growlithe",
@@ -802,19 +802,19 @@
       "name": "vaporeon",
       "id": 134,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/134.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "jolteon",
       "id": 135,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/135.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "flareon",
       "id": 136,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/136.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "porygon",
