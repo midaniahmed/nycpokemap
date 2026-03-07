@@ -603,11 +603,11 @@ export function PokemonMap({ onToggleSidebar, onToggleAnalytics }: PokemonMapPro
       )}
 
       {/* Empty state */}
-      {!loading && filteredPokemon.length === 0 && allPokemon.length > 0 && (
+      {/* {!loading && filteredPokemon.length === 0 && allPokemon.length > 0 && (
         <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-xs bg-background/80 backdrop-blur-xl rounded-2xl p-4 shadow-xl border border-border/40 pointer-events-auto">
           <p className="text-sm text-muted-foreground text-center md:text-left">No Pokémon found with current filters</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

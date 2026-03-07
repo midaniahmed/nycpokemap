@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Slider } from '@/components/ui/slider';
@@ -9,7 +8,7 @@ import { PokemonSelector } from './pokemon-selector';
 import { usePokemonStore } from '@/lib/store';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { RotateCcw, Filter, X, ArrowUpDown, Hash, Search, Tags, List, Zap, ChevronDown, MapPin } from 'lucide-react';
+import { RotateCcw, Filter, X, Search, Tags, List, Zap, ChevronDown, MapPin } from 'lucide-react';
 
 interface FilterSidebarProps {
   isMobileOpen?: boolean;
@@ -17,9 +16,7 @@ interface FilterSidebarProps {
 }
 
 function SidebarContent({ onClose }: { onClose?: () => void }) {
-  const { filters, clearFilters, setSearchQuery, setIdSearch, setSortBy, setMinCp, getFilteredPokemon, pokemon } = usePokemonStore();
-
-  const filteredPokemon = getFilteredPokemon();
+  const { filters, clearFilters, setSearchQuery, setMinCp, pokemon, loading } = usePokemonStore();
 
   const hasActiveFilters =
     filters.search.length > 0 ||
@@ -55,8 +52,14 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
       <div className="p-3 border-b border-border/60 bg-gradient-to-r from-muted/50 to-muted/20">
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-sm">
-              <Filter className="h-3.5 w-3.5 text-white" />
+            <div className="w-7 h-7 text-white rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-sm">
+              {loading ? (
+                <div className="h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : pokemon.length ? (
+                <span className="text-xs font-bold">{pokemon.length > 99 ? '+99' : pokemon.length}</span>
+              ) : (
+                <Filter className="h-3.5 w-3.5" />
+              )}
             </div>
             <h2 className="text-sm font-bold text-foreground">Filters</h2>
             {activeFilterCount > 0 && (
@@ -72,15 +75,15 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
             )}
           </div>
         </div>
-        {/* <div className="text-xs text-muted-foreground">
-          {filteredCount === totalCount ? (
+        <div className="text-xs text-muted-foreground">
+          {/* {filteredCount === totalCount ? (
             <span>Showing all <span className="font-semibold text-foreground">{totalCount}</span> Pokémon</span>
           ) : (
             <span>
               Showing <span className="font-semibold text-foreground">{filteredCount}</span> of <span className="font-semibold text-foreground">{totalCount}</span>
             </span>
-          )}
-        </div> */}
+          )} */}
+        </div>
       </div>
 
       {/* Active Filter Chips */}
