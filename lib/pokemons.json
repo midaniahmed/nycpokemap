@@ -388,7 +388,7 @@
       "name": "alakazam",
       "id": 65,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/65.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "machop",
@@ -454,7 +454,7 @@
       "name": "golem",
       "id": 76,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/76.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "ponyta",
@@ -562,7 +562,7 @@
       "name": "gengar",
       "id": 94,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "onix",
