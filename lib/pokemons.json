@@ -328,7 +328,7 @@
       "name": "golduck",
       "id": 55,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/55.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "mankey",
@@ -592,7 +592,7 @@
       "name": "kingler",
       "id": 99,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/99.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "voltorb",
@@ -688,7 +688,7 @@
       "name": "kangaskhan",
       "id": 115,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/115.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "horsea",
@@ -730,7 +730,7 @@
       "name": "mr-mime",
       "id": 122,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/122.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "scyther",
@@ -844,7 +844,7 @@
       "name": "kabutops",
       "id": 141,
       "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/141.png",
-      "categories": ["151 Kanto", "⚫ ⚪ 151 ⚪ ⚫"]
+      "categories": ["151 Kanto"]
     },
     {
       "name": "aerodactyl",
