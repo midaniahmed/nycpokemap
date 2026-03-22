@@ -21,6 +21,7 @@ export async function fetchPokemon(filters?: Partial<FilterOptions>): Promise<Po
     // Add timestamp parameters
     const now = Date.now();
     params.append('time', now.toString());
+    params.append('alwaysMighty', '1');
     // Since parameter - using a recent timestamp (e.g., 5 seconds ago)
     const since = Math.floor((now - 5000) / 1000);
     params.append('since', '0');
